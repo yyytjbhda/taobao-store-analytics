@@ -1,15 +1,18 @@
-﻿"""淘宝店铺经营分析工作台 - 应用入口。"""
+"""淘宝店铺经营分析工作台 - 应用入口。"""
 
 import streamlit as st
 
 st.set_page_config(page_title="淘宝店铺经营分析工作台", page_icon="🛍️", layout="wide")
 
-from core import ui  # noqa: E402
+from core import style, ui  # noqa: E402
 
 ui.init_state()
+style.apply_plotly_defaults()
+style.inject_global_css()
 
 pages = [
-    st.Page("views/dashboard.py", title="仪表盘", icon="📊", default=True),
+    st.Page("views/welcome.py", title="开场页", icon="🎬", default=True),
+    st.Page("views/dashboard.py", title="仪表盘", icon="📊"),
     st.Page("views/orders.py", title="订单管理", icon="📦"),
     st.Page("views/products.py", title="商品管理", icon="🛒"),
     st.Page("views/trade_analysis.py", title="交易分析", icon="📈"),

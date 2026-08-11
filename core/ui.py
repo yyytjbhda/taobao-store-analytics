@@ -1,11 +1,11 @@
-﻿"""Shared UI helpers for the workbench."""
+"""Shared UI helpers for the workbench."""
 
 from __future__ import annotations
 
 import streamlit as st
 import pandas as pd
 
-from core import storage
+from core import storage, style
 
 MODE_LABELS = {
     storage.MODE_DEMO: "演示数据（淘宝真实数据）",
@@ -21,6 +21,7 @@ def init_state() -> None:
 def mode_selector() -> str:
     """Sidebar data source selector, returns the current mode."""
     init_state()
+    style.sidebar_brand()
     mode = st.sidebar.radio(
         "数据源",
         [storage.MODE_DEMO, storage.MODE_USER],

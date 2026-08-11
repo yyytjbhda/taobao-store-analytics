@@ -1,4 +1,4 @@
-﻿"""仪表盘：经营总况一屏概览。"""
+"""仪表盘：经营总况一屏概览。"""
 
 import streamlit as st
 import pandas as pd
@@ -46,43 +46,47 @@ def render() -> None:
     c5.metric("毛利率", ui.fmt_pct(summary["毛利率"]))
     c6.metric("总毛利", ui.fmt_money(summary["毛利"]))
 
-    st.subheader("销售趋势")
-    trend = metrics.trend_by_period(filtered, "D")
-    if not trend.empty:
-        fig = px.line(trend, x="期间", y="销售额", markers=True)
-        fig.update_layout(height=320, margin=dict(l=20, r=20, t=20, b=20))
-        st.plotly_chart(fig, width="stretch")
+    with st.container(border=True):
+        st.subheader("销售趋势")
+        trend = metrics.trend_by_period(filtered, "D")
+        if not trend.empty:
+            fig = px.line(trend, x="期间", y="销售额", markers=True)
+            fig.update_layout(height=320, margin=dict(l=20, r=20, t=20, b=20))
+            st.plotly_chart(fig, width="stretch")
 
     left, right = st.columns(2)
     with left:
-        st.subheader("TOP 10 商品（销售额）")
-        top = metrics.top_products(filtered, products, metrics.SALES, 10)
-        if not top.empty:
-            fig = px.bar(
-                top.sort_values("销售额"),
-                x="销售额",
-                y="商品名称",
-                orientation="h",
-            )
-            fig.update_layout(height=360, margin=dict(l=20, r=20, t=20, b=20))
-            st.plotly_chart(fig, width="stretch")
+        with st.container(border=True):
+            st.subheader("TOP 10 商品（销售额）")
+            top = metrics.top_products(filtered, products, metrics.SALES, 10)
+            if not top.empty:
+                fig = px.bar(
+                    top.sort_values("销售额"),
+                    x="销售额",
+                    y="商品名称",
+                    orientation="h",
+                )
+                fig.update_layout(height=360, margin=dict(l=20, r=20, t=20, b=20))
+                st.plotly_chart(fig, width="stretch")
     with right:
-        st.subheader("类目销售占比")
-        cat = metrics.category_summary(filtered, products)
-        if cat.empty:
-            st.caption("需先导入商品数据（含类目）")
-        else:
-            fig = px.pie(cat, names="类目", values="销售额", hole=0.4)
-            fig.update_layout(height=360, margin=dict(l=20, r=20, t=20, b=20))
-            st.plotly_chart(fig, width="stretch")
+        with st.container(border=True):
+            st.subheader("类目销售占比")
+            cat = metrics.category_summary(filtered, products)
+            if cat.empty:
+                st.caption("需先导入商品数据（含类目）")
+            else:
+                fig = px.pie(cat, names="类目", values="销售额", hole=0.4)
+                fig.update_layout(height=360, margin=dict(l=20, r=20, t=20, b=20))
+                st.plotly_chart(fig, width="stretch")
 
-    st.subheader("库存预警")
-    alerts = metrics.inventory_alert(products)
-    if alerts.empty:
-        st.success("暂无库存预警，库存均在安全水平。")
-    else:
-        show = alerts[["商品ID", "商品名称", "库存数量", "库存预警阈值"]]
-        st.dataframe(show, width="stretch", hide_index=True)
+    with st.container(border=True):
+        st.subheader("库存预警")
+        alerts = metrics.inventory_alert(products)
+        if alerts.empty:
+            st.success("暂无库存预警，库存均在安全水平。")
+        else:
+            show = alerts[["商品ID", "商品名称", "库存数量", "库存预警阈值"]]
+            st.dataframe(show, width="stretch", hide_index=True)
 
     if summary["退款订单数"] > 0:
         st.warning(f"当前范围有 {summary['退款订单数']} 笔退款订单，详见「交易分析」。")
