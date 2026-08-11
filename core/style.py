@@ -1,4 +1,4 @@
-"""Global UI style: theme CSS, plotly defaults, sidebar brand."""
+"""Global UI style: theme CSS, plotly defaults, sidebar brand, welcome page."""
 
 from __future__ import annotations
 
@@ -18,12 +18,21 @@ GLOBAL_CSS = """
 @import url("https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&display=swap");
 
-/* ===== 基础字体与背景 ===== */
+/* ===== 基础：深色电影感 ===== */
 html, body, [class*="css"], [class*="st-"] {
   font-family: "Geist", "Microsoft YaHei", "PingFang SC", "Segoe UI", sans-serif;
 }
 .font-garamond { font-family: "Garamond", "Times New Roman", serif; }
-.stApp { background-color: #F4F6F8; }
+
+body {
+  background-color: #0B0D10;
+  background-image: url("/app/static/bg.jpg");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+}
+.stApp { background: rgba(10, 12, 16, 0.84); }
 
 /* 隐藏默认页眉 / 页脚 / 工具条 */
 #MainMenu, footer, [data-testid="stToolbar"],
@@ -32,24 +41,24 @@ html, body, [class*="css"], [class*="st-"] {
 }
 
 /* ===== 主内容标题 ===== */
-.block-container { padding-top: 1.4rem; padding-bottom: 3rem; }
+.block-container { padding-top: 1.2rem; padding-bottom: 3rem; }
 .block-container h1 {
-  font-size: 25px; font-weight: 800; color: #111827; letter-spacing: .3px;
+  font-size: 24px; font-weight: 800; color: #F3F4F6; letter-spacing: .3px;
 }
 .block-container h2 {
-  font-size: 18px; font-weight: 700; color: #1F2937;
+  font-size: 18px; font-weight: 700; color: #E5E7EB;
   margin-top: 4px; margin-bottom: 2px;
 }
-.block-container h3 { font-size: 15.5px; font-weight: 700; color: #1F2937; }
+.block-container h3 { font-size: 15.5px; font-weight: 700; color: #E5E7EB; }
 
 /* 说明文字 */
-[data-testid="stCaptionContainer"] p { color: #8A93A3; font-size: 12.5px; }
+[data-testid="stCaptionContainer"] p { color: #8B93A1; font-size: 12.5px; }
 
-/* ===== 侧边栏 ===== */
+/* ===== 侧边栏：深色毛玻璃 ===== */
 [data-testid="stSidebar"] {
-  background: rgba(14, 16, 22, 0.86);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  background: rgba(10, 12, 16, 0.82);
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
   border-right: 1px solid rgba(255,255,255,.08);
 }
 [data-testid="stSidebarContent"] { padding: .6rem .9rem 2rem; }
@@ -84,37 +93,44 @@ html, body, [class*="css"], [class*="st-"] {
 .app-brand-title { color: #FFFFFF; font-size: 16px; font-weight: 800; line-height: 1.5; }
 .app-brand-sub { color: #9CA3AF; font-size: 11px; margin-top: 3px; letter-spacing: .5px; }
 
-/* ===== 指标卡 ===== */
+/* ===== 指标卡：深色玻璃 ===== */
 [data-testid="stMetric"] {
-  background: #FFFFFF;
-  border: 1px solid #E8EAF0;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.09);
   border-radius: 14px;
   padding: 14px 18px 12px;
-  box-shadow: 0 1px 2px rgba(16,24,40,.03), 0 6px 18px rgba(16,24,40,.05);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.3), 0 6px 18px rgba(0,0,0,0.22),
+              inset 0 1px 0 rgba(255,255,255,0.06);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
 [data-testid="stMetricLabel"] {
-  color: #6B7280 !important; font-size: 13px !important; font-weight: 500 !important;
+  color: #9CA3AF !important; font-size: 13px !important; font-weight: 500 !important;
 }
 [data-testid="stMetricValue"] {
-  color: #111827 !important; font-size: 26px !important; font-weight: 800 !important; letter-spacing: .3px;
+  color: #F9FAFB !important; font-size: 26px !important; font-weight: 800 !important;
+  letter-spacing: .3px;
 }
 
 /* ===== 卡片容器 ===== */
 [data-testid="stVerticalBlockBorderWrapper"] {
-  background: #FFFFFF;
-  border: 1px solid #E8EAF0 !important;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.09) !important;
   border-radius: 14px;
-  box-shadow: 0 1px 2px rgba(16,24,40,.04), 0 4px 14px rgba(16,24,40,.04);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.3), 0 6px 18px rgba(0,0,0,0.22),
+              inset 0 1px 0 rgba(255,255,255,0.06);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   padding: 4px 14px 10px;
 }
 
 /* 图表容器 */
 [data-testid="stPlotlyChart"] {
-  background: #FFFFFF;
-  border: 1px solid #E8EAF0;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
   border-radius: 12px;
   padding: 6px;
-  box-shadow: 0 1px 2px rgba(16,24,40,.04);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.25);
 }
 
 /* ===== 按钮 ===== */
@@ -124,28 +140,37 @@ html, body, [class*="css"], [class*="st-"] {
 }
 button[kind="primary"] { background: #E84343; border: 1px solid #E84343; color: #FFFFFF; }
 button[kind="primary"]:hover { background: #D13939; border-color: #D13939; color: #FFFFFF; }
-button[kind="secondary"] { background: #FFFFFF; border: 1px solid #D6DAE2; color: #374151; }
-button[kind="secondary"]:hover { border-color: #E84343; color: #E84343; background: #FEF2F2; }
+button[kind="secondary"] {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.14);
+  color: #E5E7EB;
+}
+button[kind="secondary"]:hover {
+  border-color: #E84343; color: #FFFFFF; background: rgba(232,67,67,0.14);
+}
 
 /* ===== 表格 ===== */
 [data-testid="stDataFrame"] {
-  border: 1px solid #E8EAF0; border-radius: 12px; overflow: hidden;
-  box-shadow: 0 1px 2px rgba(16,24,40,.04);
+  border: 1px solid rgba(255,255,255,0.10);
+  border-radius: 12px; overflow: hidden;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.3);
 }
 
 /* ===== 提示框 ===== */
 [data-testid="stAlert"] { border-radius: 12px; }
 
 /* ===== Tabs ===== */
-.stTabs [data-baseweb="tab-list"] { gap: 6px; border-bottom: 1px solid #E8EAF0; }
-.stTabs [data-baseweb="tab"] { border-radius: 8px 8px 0 0; font-weight: 600; padding: 8px 16px; }
+.stTabs [data-baseweb="tab-list"] { gap: 6px; border-bottom: 1px solid rgba(255,255,255,0.10); }
+.stTabs [data-baseweb="tab"] { border-radius: 8px 8px 0 0; font-weight: 600; padding: 8px 16px; color: #9CA3AF; }
 .stTabs [data-baseweb="tab"][aria-selected="true"] { color: #E84343; }
 .stTabs [data-baseweb="tab-highlight"] { background-color: #E84343; }
 
 /* ===== Expander ===== */
 [data-testid="stExpander"] {
-  border: 1px solid #E8EAF0 !important; border-radius: 12px !important;
-  background: #FFFFFF; box-shadow: 0 1px 2px rgba(16,24,40,.04);
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.10) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.25);
 }
 [data-testid="stExpander"] summary { border-radius: 12px; }
 
@@ -157,32 +182,37 @@ button[kind="secondary"]:hover { border-color: #E84343; color: #E84343; backgrou
 
 /* ===== 主区筛选 radio：分段按钮 ===== */
 .block-container [role="radiogroup"] label {
-  background: #FFFFFF; border: 1px solid #D6DAE2; border-radius: 999px;
-  padding: 5px 16px; margin-right: 8px; font-weight: 500;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.14);
+  border-radius: 999px;
+  padding: 5px 16px; margin-right: 8px; font-weight: 500; color: #D1D5DB;
   transition: all .15s ease; cursor: pointer;
 }
-.block-container [role="radiogroup"] label:hover { border-color: #E84343; color: #E84343; }
+.block-container [role="radiogroup"] label:hover { border-color: #E84343; color: #FFFFFF; }
 .block-container [role="radiogroup"] label:has(input:checked) {
   background: #E84343; border-color: #E84343;
 }
 .block-container [role="radiogroup"] label:has(input:checked) * {
   color: #FFFFFF !important;
 }
+
+/* 分割线 */
+hr { border-color: rgba(255,255,255,0.08) !important; }
 """
 
 
 def apply_plotly_defaults() -> None:
-    """Set a unified look for all plotly charts."""
-    pio.templates.default = "plotly_white"
+    """Set a unified dark look for all plotly charts."""
+    pio.templates.default = "plotly_dark"
     try:
-        tpl = pio.templates["plotly_white"]
+        tpl = pio.templates["plotly_dark"]
         tpl.layout.paper_bgcolor = "rgba(0,0,0,0)"
         tpl.layout.plot_bgcolor = "rgba(0,0,0,0)"
-        tpl.layout.font.family = "Microsoft YaHei, PingFang SC, sans-serif"
-        tpl.layout.font.color = "#374151"
+        tpl.layout.font.family = "Microsoft YaHei, Geist, sans-serif"
+        tpl.layout.font.color = "#D1D5DB"
         tpl.layout.colorway = ["#E84343", "#F59E0B", "#10B981", "#3B82F6", "#8B5CF6", "#EC4899"]
-        tpl.layout.xaxis.gridcolor = "rgba(0,0,0,0.06)"
-        tpl.layout.yaxis.gridcolor = "rgba(0,0,0,0.06)"
+        tpl.layout.xaxis.gridcolor = "rgba(255,255,255,0.08)"
+        tpl.layout.yaxis.gridcolor = "rgba(255,255,255,0.08)"
     except Exception:  # noqa: BLE001
         pass
 
@@ -193,6 +223,7 @@ def inject_global_css() -> None:
 
 def sidebar_brand() -> None:
     st.sidebar.markdown(BRAND_HTML, unsafe_allow_html=True)
+
 
 WELCOME_CSS = """
 /* ===== 开场页：全屏隐藏默认布局 ===== */
@@ -212,14 +243,14 @@ WELCOME_CSS = """
 .hero-video { position: absolute; inset: 0; z-index: 0; }
 .hero-video video {
   width: 100%; height: 100%; object-fit: cover; object-position: center;
-  opacity: 0.55;
+  opacity: 0.82; filter: brightness(1.02);
 }
 .hero-glow {
   position: absolute; inset: 0; z-index: 1;
   background:
-    radial-gradient(ellipse at 50% 38%, rgba(232, 67, 67, 0.14), transparent 58%),
-    radial-gradient(ellipse at 80% 80%, rgba(59, 130, 246, 0.08), transparent 50%),
-    linear-gradient(180deg, rgba(1,1,1,0.62) 0%, rgba(1,1,1,0.28) 42%, rgba(1,1,1,0.86) 100%);
+    radial-gradient(ellipse at 50% 38%, rgba(232, 67, 67, 0.13), transparent 58%),
+    radial-gradient(ellipse at 80% 80%, rgba(59, 130, 246, 0.07), transparent 50%),
+    linear-gradient(180deg, rgba(1,1,1,0.55) 0%, rgba(1,1,1,0.24) 42%, rgba(1,1,1,0.78) 100%);
 }
 .hero-inner { position: relative; z-index: 2; text-align: center; padding: 0 20px; margin-top: -6vh; }
 
@@ -265,12 +296,13 @@ WELCOME_CSS = """
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* ===== 玻璃拟态 CTA ===== */
+/* ===== 玻璃拟态 CTA（居中：定位在外层，动画含 translateX(-50%)） ===== */
 [data-testid="stLinkButton"] {
   position: fixed; bottom: 9vh; left: 50%; transform: translateX(-50%);
-  z-index: 30; animation: fadeUp 0.8s ease 2.1s both;
+  z-index: 30;
 }
-a[data-testid="stLinkButton"] {
+a[data-testid="stBaseLinkButton-primary"],
+a[data-testid="stBaseLinkButton-secondary"] {
   display: inline-block;
   background: rgba(255,255,255,0.01);
   backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
@@ -282,8 +314,10 @@ a[data-testid="stLinkButton"] {
   position: relative; overflow: hidden;
   text-decoration: none !important;
   transition: background 0.3s ease, box-shadow 0.3s ease;
+  animation: fadeUpBtn 0.8s ease 2.1s both;
 }
-a[data-testid="stLinkButton"]::before {
+a[data-testid="stBaseLinkButton-primary"]::before,
+a[data-testid="stBaseLinkButton-secondary"]::before {
   content: ""; position: absolute; inset: 0; border-radius: inherit; padding: 1.4px;
   background: linear-gradient(180deg,
     rgba(255,255,255,0.45) 0%, rgba(255,255,255,0.15) 20%,
@@ -294,10 +328,17 @@ a[data-testid="stLinkButton"]::before {
   mask-composite: exclude;
   pointer-events: none;
 }
-a[data-testid="stLinkButton"]:hover {
+a[data-testid="stBaseLinkButton-primary"]:hover,
+a[data-testid="stBaseLinkButton-secondary"]:hover {
   background: rgba(255,255,255,0.05);
   box-shadow: inset 0 1px 2px rgba(255,255,255,0.18);
   color: #FFFFFF !important;
 }
-a[data-testid="stLinkButton"]:active { transform: scale(0.98); }
+a[data-testid="stBaseLinkButton-primary"]:active,
+a[data-testid="stBaseLinkButton-secondary"]:active { transform: scale(0.98); }
+
+@keyframes fadeUpBtn {
+  from { opacity: 0; transform: translateX(-50%) translateY(22px); }
+  to { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
 """
