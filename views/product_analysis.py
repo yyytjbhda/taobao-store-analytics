@@ -1,4 +1,4 @@
-﻿"""商品分析：TOP 排行、利润贡献、类目分析。"""
+"""商品分析：TOP 排行、利润贡献、类目分析。"""
 
 import streamlit as st
 import plotly.express as px
@@ -56,15 +56,15 @@ def render() -> None:
     if not bands.empty:
         fig = px.bar(bands, x="价格带", y="销售额", title="各价格带销售额")
         fig.update_layout(height=320, margin=dict(l=20, r=20, t=40, b=20))
-        st.plotly_chart(fig, use_container_width=True)
-        st.dataframe(bands, use_container_width=True, hide_index=True)
+        st.plotly_chart(fig, width="stretch")
+        st.dataframe(bands, width="stretch", hide_index=True)
 
     st.subheader("滞销识别（建议清仓/下架）")
     slow = metrics.slow_movers(orders, products)
     if slow.empty:
         st.success("暂无滞销商品。")
     else:
-        st.dataframe(slow.head(20), use_container_width=True, hide_index=True)
+        st.dataframe(slow.head(20), width="stretch", hide_index=True)
         st.caption(f"滞销定义：有库存且累计销量不足 3 件。共识别 {len(slow)} 个，展示前 20 个。")
 
 render()

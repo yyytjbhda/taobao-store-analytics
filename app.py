@@ -16,6 +16,7 @@ pages = [
     st.Page("views/product_analysis.py", title="商品分析", icon="🏆"),
     st.Page("views/marketing_analysis.py", title="营销分析", icon="📣"),
     st.Page("views/customer_analysis.py", title="客户分析", icon="👥"),
+    st.Page("views/insights.py", title="经营建议", icon="💡"),
     st.Page("views/sop.py", title="SOP 流程管理", icon="✅"),
     st.Page("views/data_manage.py", title="数据管理", icon="🗂️"),
 ]

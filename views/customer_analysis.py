@@ -1,4 +1,4 @@
-﻿"""客户分析：复购率、RFM 客户分层。"""
+"""客户分析：复购率、RFM 客户分层。"""
 
 import plotly.express as px
 import streamlit as st
@@ -39,8 +39,8 @@ def render() -> None:
             x="客户数", y="客户分层", orientation="h", color="客户分层",
         )
         fig.update_layout(height=380, margin=dict(l=20, r=20, t=20, b=20))
-        st.plotly_chart(fig, use_container_width=True)
-        st.dataframe(segments, use_container_width=True, hide_index=True)
+        st.plotly_chart(fig, width="stretch")
+        st.dataframe(segments, width="stretch", hide_index=True)
         st.caption("分层逻辑：R=最近购买时间、F=购买次数、M=消费金额，按中位数划分高低。")
 
     st.subheader("高价值客户明细")
@@ -48,7 +48,7 @@ def render() -> None:
     show = high_value[["买家ID", "最近购买", "购买次数", "总金额", "客户分层"]]
     st.dataframe(
         show,
-        use_container_width=True,
+        width="stretch",
         hide_index=True,
         column_config={"总金额": st.column_config.NumberColumn(format="¥%.2f")},
     )
@@ -56,7 +56,7 @@ def render() -> None:
     st.subheader("客户明细（全部）")
     st.dataframe(
         rfm[["买家ID", "最近购买", "购买次数", "总金额", "最近天数", "客户分层"]],
-        use_container_width=True,
+        width="stretch",
         hide_index=True,
         column_config={"总金额": st.column_config.NumberColumn(format="¥%.2f")},
     )

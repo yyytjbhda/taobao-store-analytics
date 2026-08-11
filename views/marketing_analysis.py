@@ -1,4 +1,4 @@
-﻿"""营销分析：推广花费、ROI、渠道效果。"""
+"""营销分析：推广花费、ROI、渠道效果。"""
 
 import pandas as pd
 import plotly.express as px
@@ -83,8 +83,8 @@ def render() -> None:
     if not by_channel.empty:
         fig = px.bar(by_channel, x="渠道", y="成交金额", title="各渠道成交金额", color="渠道")
         fig.update_layout(height=320, margin=dict(l=20, r=20, t=40, b=20))
-        st.plotly_chart(fig, use_container_width=True)
-        st.dataframe(by_channel, use_container_width=True, hide_index=True)
+        st.plotly_chart(fig, width="stretch")
+        st.dataframe(by_channel, width="stretch", hide_index=True)
 
     st.subheader("每日花费与 ROI 趋势")
     trend = metrics.marketing_trend(marketing)
@@ -92,8 +92,8 @@ def render() -> None:
         fig = px.line(trend, x="日期", y="ROI", markers=True, title="每日 ROI")
         fig.add_hline(y=1.0, line_dash="dash", line_color="red")
         fig.update_layout(height=300, margin=dict(l=20, r=20, t=40, b=20))
-        st.plotly_chart(fig, use_container_width=True)
-        st.dataframe(trend, use_container_width=True, hide_index=True)
+        st.plotly_chart(fig, width="stretch")
+        st.dataframe(trend, width="stretch", hide_index=True)
 
     if mode == storage.MODE_USER:
         add_form()
