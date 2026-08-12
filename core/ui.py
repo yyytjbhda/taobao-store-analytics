@@ -35,6 +35,8 @@ def load_data() -> tuple[str, pd.DataFrame, pd.DataFrame]:
     mode = mode_selector()
     orders = storage.load_orders(mode)
     products = storage.load_products(mode)
+    if mode == storage.MODE_USER and orders.empty:
+        st.info("「我的数据」还没有订单数据：请到「订单管理」上传 Excel 订单表，或切换到「演示数据」体验完整功能。")
     return mode, orders, products
 
 

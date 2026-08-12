@@ -1,4 +1,4 @@
-﻿"""Data storage and loading for the Taobao Store Analytics Workbench."""
+"""Data storage and loading for the Taobao Store Analytics Workbench."""
 
 from __future__ import annotations
 
@@ -59,9 +59,12 @@ def _data_dir(mode: str) -> Path:
 
 
 def _read_csv(path: Path) -> pd.DataFrame:
-    if not path.exists():
+    if not path.exists() or path.stat().st_size == 0:
         return pd.DataFrame()
-    df = pd.read_csv(path, dtype=str, keep_default_na=False, encoding="utf-8-sig")
+    try:
+        df = pd.read_csv(path, dtype=str, keep_default_na=False, encoding="utf-8-sig")
+    except (pd.errors.EmptyDataError, pd.errors.ParserError, OSError, UnicodeDecodeError):
+        return pd.DataFrame()
     return _coerce_dtypes(df)
 
 

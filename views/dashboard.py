@@ -28,7 +28,6 @@ def render() -> None:
 
     if orders.empty:
         ui.data_range_hint(orders)
-        st.info("当前数据源暂无订单数据。请到左侧「数据管理」页面导入 Excel，或切换数据源。")
         return
 
     ui.data_range_hint(orders)

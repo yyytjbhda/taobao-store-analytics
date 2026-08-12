@@ -1,4 +1,4 @@
-﻿"""Build demo orders/products/marketing from the real Taobao UserBehavior dataset.
+"""Build demo orders/products/marketing from the real Taobao UserBehavior dataset.
 
 Note: the public Taobao dataset has no money/refund fields; amounts and
 refund flags are simulated with realistic distributions. Behavior, users,
@@ -32,7 +32,11 @@ rng = np.random.default_rng(20260811)
 df = pd.read_csv(RAW, header=None, names=["user_id", "item_id", "category_id", "behavior", "ts"])
 buy = df[df["behavior"] == "buy"].copy()
 
-buy["成交时间"] = pd.to_datetime(buy["ts"], unit="s")
+START = pd.Timestamp("2026-08-03")
+SRC_START = pd.Timestamp("2017-11-24")
+TIME_OFFSET = START - SRC_START
+
+buy["成交时间"] = pd.to_datetime(buy["ts"], unit="s") + TIME_OFFSET
 buy["类目"] = buy["category_id"].mod(8).map(CATEGORIES)
 buy = buy.sort_values(["user_id", "成交时间"]).reset_index(drop=True)
 

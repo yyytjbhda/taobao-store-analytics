@@ -3,3 +3,4 @@
 data/user/
 data/demo/raw/
 .streamlit/secrets.toml
+data/demo/*.xlsx
