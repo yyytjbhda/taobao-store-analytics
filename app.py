@@ -2,13 +2,19 @@
 
 import streamlit as st
 
-st.set_page_config(page_title="淘宝店铺经营分析工作台", page_icon="🛍️", layout="wide")
+st.set_page_config(
+    page_title="淘宝店铺经营分析工作台",
+    page_icon="🛍️",
+    layout="wide",
+    initial_sidebar_state="expanded",
+)
 
 from core import style, ui  # noqa: E402
 
 ui.init_state()
 style.apply_plotly_defaults()
 style.inject_global_css()
+style.inject_sidebar_lock()
 
 pages = [
     st.Page("views/welcome.py", title="开场页", icon="🎬", default=True),

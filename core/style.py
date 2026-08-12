@@ -62,6 +62,8 @@ body {
   border-right: 1px solid rgba(255,255,255,.08);
 }
 [data-testid="stSidebarContent"] { padding: .6rem .9rem 2rem; }
+/* 锁定侧边栏：隐藏收起按钮，导航不会消失 */
+[data-testid="stSidebarCollapseButton"] { display: none !important; }
 [data-testid="stSidebar"] [data-testid="stMarkdownContainer"] p,
 [data-testid="stSidebar"] label { color: #D7DCE4; }
 
@@ -221,13 +223,32 @@ def inject_global_css() -> None:
     st.markdown(f"<style>{GLOBAL_CSS}</style>", unsafe_allow_html=True)
 
 
+SIDEBAR_LOCK_JS = """<script>
+(function () {
+  if (window.__tbSidebarUnlocked) return;
+  window.__tbSidebarUnlocked = true;
+  function unlock() {
+    var btn = document.querySelector('[data-testid="stExpandSidebarButton"]');
+    if (btn) btn.click();
+  }
+  window.setTimeout(unlock, 200);
+  window.setInterval(unlock, 800);
+})();
+</script>"""
+
+
+def inject_sidebar_lock() -> None:
+    """Auto-expand the sidebar and keep it expanded (nav never disappears)."""
+    st.html(SIDEBAR_LOCK_JS, unsafe_allow_javascript=True)
+
+
 def sidebar_brand() -> None:
     st.sidebar.markdown(BRAND_HTML, unsafe_allow_html=True)
 
 
 WELCOME_CSS = """
 /* ===== 开场页：全屏隐藏默认布局 ===== */
-[data-testid="stSidebar"] { display: none !important; }
+/* sidebar kept visible on welcome page */
 [data-testid="stHeader"] { display: none !important; }
 [data-testid="stMainBlockContainer"], .block-container {
   padding: 0 !important; max-width: 100% !important;
