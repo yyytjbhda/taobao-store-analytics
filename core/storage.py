@@ -7,6 +7,7 @@ import json
 from pathlib import Path
 
 import pandas as pd
+import streamlit as st
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 DATA_DIR = PROJECT_ROOT / "data"
@@ -58,6 +59,29 @@ def _data_dir(mode: str) -> Path:
     return DEMO_DIR if mode == MODE_DEMO else USER_DIR
 
 
+def _dir_writable(d: Path) -> bool:
+    """True when we can write to the directory (cloud deploys are read-only)."""
+    try:
+        d.mkdir(parents=True, exist_ok=True)
+        probe = d / ".write_probe"
+        probe.write_text("1", encoding="utf-8")
+        probe.unlink()
+        return True
+    except OSError:
+        return False
+
+
+def _mem_store() -> dict:
+    """Session-scoped fallback storage for read-only (cloud) environments."""
+    if "_mem_data" not in st.session_state:
+        st.session_state["_mem_data"] = {}
+    return st.session_state["_mem_data"]
+
+
+def _is_cloud_readonly() -> bool:
+    return not _dir_writable(USER_DIR)
+
+
 def _read_csv(path: Path) -> pd.DataFrame:
     if not path.exists() or path.stat().st_size == 0:
         return pd.DataFrame()
@@ -86,44 +110,63 @@ def _write_csv(df: pd.DataFrame, path: Path) -> None:
     df.to_csv(path, index=False, encoding="utf-8-sig")
 
 
+def _load_csv_or_mem(path: Path, key: str) -> pd.DataFrame:
+    df = _read_csv(path)
+    if df.empty and key in _mem_store():
+        df = _mem_store()[key]
+    return df
+
+
 def load_orders(mode: str = MODE_USER) -> pd.DataFrame:
-    return _read_csv(_data_dir(mode) / ORDER_FILE)
+    return _load_csv_or_mem(_data_dir(mode) / ORDER_FILE, ORDER_FILE)
 
 
 def save_orders(df: pd.DataFrame, mode: str = MODE_USER) -> None:
-    _write_csv(df, _data_dir(mode) / ORDER_FILE)
+    if _dir_writable(_data_dir(mode)):
+        _write_csv(df, _data_dir(mode) / ORDER_FILE)
+    else:
+        _mem_store()[ORDER_FILE] = df.copy()
 
 
 def load_products(mode: str = MODE_USER) -> pd.DataFrame:
-    return _read_csv(_data_dir(mode) / PRODUCT_FILE)
+    return _load_csv_or_mem(_data_dir(mode) / PRODUCT_FILE, PRODUCT_FILE)
 
 
 def save_products(df: pd.DataFrame, mode: str = MODE_USER) -> None:
-    _write_csv(df, _data_dir(mode) / PRODUCT_FILE)
+    if _dir_writable(_data_dir(mode)):
+        _write_csv(df, _data_dir(mode) / PRODUCT_FILE)
+    else:
+        _mem_store()[PRODUCT_FILE] = df.copy()
 
 
 def load_marketing(mode: str = MODE_USER) -> pd.DataFrame:
-    return _read_csv(_data_dir(mode) / MARKETING_FILE)
+    return _load_csv_or_mem(_data_dir(mode) / MARKETING_FILE, MARKETING_FILE)
 
 
 def save_marketing(df: pd.DataFrame, mode: str = MODE_USER) -> None:
-    _write_csv(df, _data_dir(mode) / MARKETING_FILE)
+    if _dir_writable(_data_dir(mode)):
+        _write_csv(df, _data_dir(mode) / MARKETING_FILE)
+    else:
+        _mem_store()[MARKETING_FILE] = df.copy()
 
 
 def _load_json(path: Path, default):
-    if not path.exists():
-        return default
-    try:
-        with open(path, "r", encoding="utf-8") as f:
-            return json.load(f)
-    except (json.JSONDecodeError, OSError):
-        return default
+    if path.exists():
+        try:
+            with open(path, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except (json.JSONDecodeError, OSError):
+            pass
+    return _mem_store().get(str(path), default)
 
 
 def _save_json(obj, path: Path) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    with open(path, "w", encoding="utf-8") as f:
-        json.dump(obj, f, ensure_ascii=False, indent=2)
+    if _dir_writable(path.parent):
+        path.parent.mkdir(parents=True, exist_ok=True)
+        with open(path, "w", encoding="utf-8") as f:
+            json.dump(obj, f, ensure_ascii=False, indent=2)
+    else:
+        _mem_store()[str(path)] = obj
 
 
 def load_sop_flows(mode: str = MODE_USER) -> list:
