@@ -1,4 +1,4 @@
-﻿"""Excel and image report export (weekly/monthly)."""
+"""Excel and image report export (weekly/monthly)."""
 
 from __future__ import annotations
 
@@ -65,14 +65,38 @@ def export_report_xlsx(
     return buf.getvalue()
 
 
+_CJK_FONT_FILES = [
+    "C:/Windows/Fonts/msyh.ttc",
+    "C:/Windows/Fonts/msyhbd.ttc",
+    "C:/Windows/Fonts/simhei.ttf",
+    "/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc",
+    "/usr/share/fonts/truetype/noto/NotoSansCJK-Regular.ttc",
+    "/usr/share/fonts/truetype/wqy/wqy-zenhei.ttc",
+]
+_CJK_FONT_NAMES = [
+    "Microsoft YaHei",
+    "Noto Sans CJK SC",
+    "Noto Sans SC",
+    "WenQuanYi Zen Hei",
+    "SimHei",
+    "DengXian",
+    "SimSun",
+]
+
+
 def _setup_chinese_font() -> None:
-    for font in ["C:/Windows/Fonts/msyh.ttc", "C:/Windows/Fonts/msyhbd.ttc", "C:/Windows/Fonts/simhei.ttf"]:
+    """Register a CJK font that exists on the current platform (Win/Linux)."""
+    for font in _CJK_FONT_FILES:
         try:
             if Path(font).exists():
                 fm.fontManager.addfont(font)
         except Exception:  # noqa: BLE001
             pass
-    plt.rcParams["font.family"] = ["Microsoft YaHei", "SimHei"]
+    names = {f.name for f in fm.fontManager.ttflist}
+    chosen = next((n for n in _CJK_FONT_NAMES if n in names), None)
+    if chosen:
+        plt.rcParams["font.family"] = "sans-serif"
+        plt.rcParams["font.sans-serif"] = [chosen, "DejaVu Sans"]
     plt.rcParams["axes.unicode_minus"] = False
 
 

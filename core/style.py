@@ -114,6 +114,39 @@ body {
   letter-spacing: .3px;
 }
 
+/* ===== KPI 卡片：数值 + 同环比 + 口径 ===== */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 12px;
+  margin: 10px 0 20px;
+}
+.kpi-card {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.09);
+  border-radius: 14px;
+  padding: 13px 14px 11px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.3), 0 6px 18px rgba(0,0,0,0.22),
+              inset 0 1px 0 rgba(255,255,255,0.06);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: transform .15s ease;
+}
+.kpi-card:hover { transform: translateY(-2px); }
+.kpi-label { color: #9CA3AF; font-size: 12px; font-weight: 500; letter-spacing: .3px; }
+.kpi-value { color: #F9FAFB; font-size: 21px; font-weight: 800; margin: 4px 0 7px; letter-spacing: .3px; }
+.kpi-delta { display: flex; flex-wrap: wrap; gap: 8px; font-size: 11px; font-weight: 600; }
+.kpi-delta .up { color: #34D399; }
+.kpi-delta .down { color: #F87171; }
+.kpi-delta .flat { color: #8B93A1; }
+.kpi-note {
+  color: #6E7686; font-size: 10.5px; line-height: 1.55;
+  margin-top: 7px; padding-top: 6px;
+  border-top: 1px dashed rgba(255,255,255,0.08);
+}
+@media (max-width: 1400px) { .kpi-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 760px) { .kpi-grid { grid-template-columns: repeat(2, 1fr); } }
+
 /* ===== 卡片容器 ===== */
 [data-testid="stVerticalBlockBorderWrapper"] {
   background: rgba(255,255,255,0.05);

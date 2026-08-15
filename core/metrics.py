@@ -1,4 +1,4 @@
-﻿"""Business metric calculations for the analytics workbench."""
+"""Business metric calculations for the analytics workbench."""
 
 from __future__ import annotations
 
@@ -15,6 +15,34 @@ GROSS_MARGIN = "毛利率"
 
 def _non_refunded(orders: pd.DataFrame) -> pd.DataFrame:
     return orders[orders["退款状态"] != "已退款"]
+
+
+def _pct_change(cur: float, prev: float) -> float | None:
+    if prev is None or prev == 0 or cur is None:
+        return None
+    return (cur - prev) / prev * 100
+
+
+def _pp_change(cur: float, prev: float) -> float | None:
+    if prev is None or cur is None:
+        return None
+    return (cur - prev) * 100
+
+
+def compare_summaries(cur: dict, prev: dict) -> dict:
+    """MOM change for headline metrics vs the previous window.
+
+    Growth metrics use percent change; rate metrics use percentage-point diff.
+    Returns {metric: {"mom": float | None}}; yoy left for caller to fill.
+    """
+    growth = [SALES, ORDER_CNT, AOV, GROSS_PROFIT]
+    rates = [REFUND_RATE, GROSS_MARGIN]
+    out: dict = {}
+    for k in growth:
+        out[k] = {"mom": _pct_change(cur.get(k), prev.get(k)), "yoy": None}
+    for k in rates:
+        out[k] = {"mom": _pp_change(cur.get(k), prev.get(k)), "yoy": None}
+    return out
 
 
 def compute_summary(orders: pd.DataFrame, products: pd.DataFrame) -> dict:
