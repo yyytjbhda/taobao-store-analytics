@@ -66,6 +66,7 @@ def export_report_xlsx(
 
 
 _CJK_FONT_FILES = [
+    str(Path(__file__).resolve().parent.parent / "static/fonts/NotoSansCJKsc-Regular.otf"),
     "C:/Windows/Fonts/msyh.ttc",
     "C:/Windows/Fonts/msyhbd.ttc",
     "C:/Windows/Fonts/simhei.ttf",
